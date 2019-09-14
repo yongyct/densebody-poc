@@ -1,0 +1,30 @@
+{
+    "job_conf":{
+        "name":"densebody_resnet",
+        "data_root":"mypath",
+        "checkpoints_dir":"mypath",
+        "dataset":"surreal",
+        "max_dataset_size":-1,
+        "im_size":256,
+        "batch_size":10,
+        "uv_map":"radvani",
+        "num_threads":2
+    },
+    "model_conf":{
+        "model":"resnet",
+        "net_d":"convres",
+        "nz":256,
+        "ndown":6,
+        "nchannels":64,
+        "norm":"batch",
+        "nl":"relu",
+        "init_type":"xavier"
+    },
+    "test_conf":{
+        "verbose":true,
+        "results_dir":"mypath",
+        "phase":"test",
+        "continue_train":true,
+        "load_epoch":0
+    }
+}
