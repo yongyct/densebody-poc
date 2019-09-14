@@ -1,0 +1,7 @@
+**/data/*
+**/models/*
+**/weights/*
+**/.ipynb_checkpoints/*
+**/__pycache__/*
+**/densebody_poc.egg-info/*
+**/build/*
