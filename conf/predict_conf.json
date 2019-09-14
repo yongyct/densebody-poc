@@ -1,14 +1,15 @@
 {
     "job_conf":{
         "name":"densebody_resnet",
-        "data_root":"mypath",
+        "data_dir":"./data",
         "checkpoints_dir":"mypath",
         "dataset":"surreal",
         "max_dataset_size":-1,
         "im_size":256,
         "batch_size":10,
         "uv_map":"radvani",
-        "num_threads":2
+        "num_threads":2,
+        "phase":"in_the_wild"
     },
     "model_conf":{
         "model":"resnet",
@@ -23,7 +24,6 @@
     "predict_conf":{
         "verbose":true,
         "results_dir":"mypath",
-        "phase":"in_the_wild",
         "continue_train":false,
         "load_epoch":0
     }
