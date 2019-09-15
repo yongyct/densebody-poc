@@ -1,0 +1,5 @@
+{
+    "app_conf":{
+        "tqdm_ncols":120
+    }
+}

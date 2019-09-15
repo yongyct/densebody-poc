@@ -12,7 +12,7 @@
         "phase":"in_the_wild"
     },
     "model_conf":{
-        "model":"resnet",
+        "model":"resnetmodel",
         "net_d":"convres",
         "nz":256,
         "ndown":6,

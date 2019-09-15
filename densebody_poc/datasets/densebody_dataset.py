@@ -33,9 +33,8 @@ class DenseBodyDataset(Dataset):
             if cur_length == 0:
                 raise FileNotFoundError
         except FileNotFoundError:
-            logging.error('No input images found in provided data directory "{}",'\
-                .format(self.data_dir) + ' exiting program')
-            sys.exit()
+            raise FileNotFoundError('No input images found in provided data directory "{}",'\
+                .format(self.data_dir))
         
         if conf[JOB_CONF_KEY][PHASE_KEY] == PREDICT:
             max_dataset_size = conf[JOB_CONF_KEY][MAX_DATASET_SIZE_KEY]
@@ -45,21 +44,35 @@ class DenseBodyDataset(Dataset):
             self.itemtypes = [IM_NAMES]
 
     def __len__(self):
+        '''
+        Mandatory override of Dataset base class method, to get length of dataset
+        '''
         return self.length
     
     def __getitem__(self, idx):
+        '''
+        Mandatory override of Dataset base class method, to get item in dataset
+        '''
         out_dict = {}
         for itemtype in self.itemtypes:
             item = getattr(self, itemtype)[idx]
             if itemtype.endswith('names'):
-                img_tensor = self.transform(cv2.imread(item))
+                try:
+                    img_tensor = self.transform(cv2.imread(item))
+                except TypeError as e:
+                    raise TypeError(str(e) + '\nFilename: {}'.format(item))
                 out_dict[itemtype.replace('names','data')] = img_tensor.to(self.device)
             else:
-                out_dict[itemtype] = torch.from_numpy(item)
+                out_dict[itemtype] = torch.from_numpy(item).to(self.device)
         return out_dict
 
     @staticmethod
     def _get_image_names(root):
+        '''
+        Internal method to get names of all images within a root directory, 
+        including sub-directories
+        '''
+        # TODO: Take into account potential dup images by .ipynb_checkpoints
         image_names = [root + '/' + name for name in os.listdir(root) 
             if name.split('.')[-1].lower() in IMAGE_EXTENSIONS]
         subs = [sub for sub in os.listdir(root) if os.path.isdir(sub)]

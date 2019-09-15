@@ -11,6 +11,9 @@ PHASE_KEY = 'phase'
 MAX_DATASET_SIZE_KEY = 'max_dataset_size'
 BATCH_SIZE_KEY = 'batch_size'
 
+# 2nd level config keys - model
+MODEL_KEY = 'model'
+
 
 # Phases
 TRAIN = 'train'
@@ -20,3 +23,4 @@ PREDICT = 'in_the_wild'
 # Others
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'tiff']
 IM_NAMES = 'im_names'
+APP_PROPS_PATH = '../resources/application_properties.json'
