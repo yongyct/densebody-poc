@@ -57,7 +57,6 @@ if __name__ == '__main__':
         model = model_util.get_model(conf)
         model.initialize(conf)
         model.setup(conf)
-        print(model)
     except ModelNotFoundError as e:
         handle_error(e)
         
@@ -76,7 +75,7 @@ if __name__ == '__main__':
             
             # TODO implement setting of input data to model, and passing data into encoder/decoder
             model.set_input(data)
-            # model.fake_UV = model.decoder(model.encoder(model.real_input))
+            model.fake_UV = model.decoder(model.encoder(model.real_input))
 
             # TODO: Implement saving of results
             # visualizer.save_results(model.get_current_visuals(), opt.load_epoch, i)

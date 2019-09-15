@@ -1,8 +1,8 @@
 {
     "job_conf":{
         "name":"densebody_resnet",
-        "data_dir":"./data",
-        "checkpoints_dir":"./weights",
+        "data_dir":"../data",
+        "checkpoints_dir":"../weights",
         "dataset":"surreal",
         "max_dataset_size":-1,
         "batch_size":10,

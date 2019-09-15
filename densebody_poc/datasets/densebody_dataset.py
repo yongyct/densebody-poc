@@ -6,6 +6,7 @@ import cv2
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
+from PIL import Image
 
 from densebody_poc.utils.constants import JOB_CONF_KEY, DATA_DIR_KEY, PHASE_KEY, \
 MAX_DATASET_SIZE_KEY, PREDICT, IMAGE_EXTENSIONS, IM_NAMES
@@ -19,7 +20,7 @@ class DenseBodyDataset(Dataset):
         
         self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         self.transform = transforms.Compose([
-            
+            # Image.fromarray,
             transforms.ToTensor(),
             transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
         ])
@@ -52,18 +53,19 @@ class DenseBodyDataset(Dataset):
     def __getitem__(self, idx):
         '''
         Mandatory override of Dataset base class method, to get item in dataset
+        TODO: item should contain a batch of images to stack
         '''
         out_dict = {}
         for itemtype in self.itemtypes:
             item = getattr(self, itemtype)[idx]
             if itemtype.endswith('names'):
                 try:
-                    img_tensor = self.transform(cv2.imread(item))
+                    img_tensors = [self.transform(cv2.imread(item))]
                 except TypeError as e:
                     raise TypeError(str(e) + '\nFilename: {}'.format(item))
-                out_dict[itemtype.replace('names','data')] = img_tensor.to(self.device)
+                out_dict[itemtype.replace('names','data')] = torch.stack(img_tensors).to(self.device)
             else:
-                out_dict[itemtype] = torch.from_numpy(item).to(self.device)
+                out_dict[itemtype.replace('names','data')] = torch.from_numpy(item).to(self.device)
         return out_dict
 
     @staticmethod
