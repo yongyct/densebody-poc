@@ -2,5 +2,5 @@
 **/weights/*
 **/.ipynb_checkpoints/*
 **/__pycache__/*
-**/densebody_poc.egg-info/*
+**/*.egg-info/*
 **/build/*
