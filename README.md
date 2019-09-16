@@ -12,9 +12,12 @@ See under `notebooks` for sample usage (currently only for predicting 1 image at
 ### Python Scripts
 See under `Scripts`, currently still WIP
 
-# References
+# References (Many thanks to the below)
 * https://github.com/Lotayou/densebody_pytorch
-* https://arxiv.org/pdf/1903.10153.pdf
+
+# Citation
+[DenseBody: Directly Regressing Dense 3D Human Pose and Shape From a Single Color Image](https://arxiv.org/pdf/1903.10153.pdf)
+Pengfei Yao, Zheng Fang, Fan Wu, Yao Feng, Jiwei Li
 
 # Built-With
 * [Pytorch](https://pytorch.org/)
