@@ -1,23 +1,21 @@
 import os
-import sys
-import logging
 
 import cv2
 import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
-from PIL import Image
 
 from densebody_poc.utils.constants import JOB_CONF_KEY, DATA_DIR_KEY, PHASE_KEY, \
-MAX_DATASET_SIZE_KEY, PREDICT, IMAGE_EXTENSIONS, IM_NAMES
+    MAX_DATASET_SIZE_KEY, PREDICT, IMAGE_EXTENSIONS, IM_NAMES
 
 
 class DenseBodyDataset(Dataset):
     '''
     Dataset class to contain relevant data use for various modes of operations
     '''
+
     def __init__(self, conf):
-        
+
         self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         self.transform = transforms.Compose([
             # Image.fromarray,
@@ -34,9 +32,9 @@ class DenseBodyDataset(Dataset):
             if cur_length == 0:
                 raise FileNotFoundError
         except FileNotFoundError:
-            raise FileNotFoundError('No input images found in provided data directory "{}",'\
-                .format(self.data_dir))
-        
+            raise FileNotFoundError('No input images found in provided data directory "{}",' \
+                                    .format(self.data_dir))
+
         if conf[JOB_CONF_KEY][PHASE_KEY] == PREDICT:
             max_dataset_size = conf[JOB_CONF_KEY][MAX_DATASET_SIZE_KEY]
             if 0 < max_dataset_size < cur_length:
@@ -49,7 +47,7 @@ class DenseBodyDataset(Dataset):
         Mandatory override of Dataset base class method, to get length of dataset
         '''
         return self.length
-    
+
     def __getitem__(self, idx):
         '''
         Mandatory override of Dataset base class method, to get item in dataset
@@ -63,9 +61,9 @@ class DenseBodyDataset(Dataset):
                     img_tensors = [self.transform(cv2.imread(item))]
                 except TypeError as e:
                     raise TypeError(str(e) + '\nFilename: {}'.format(item))
-                out_dict[itemtype.replace('names','data')] = torch.stack(img_tensors).to(self.device)
+                out_dict[itemtype.replace('names', 'data')] = torch.stack(img_tensors).to(self.device)
             else:
-                out_dict[itemtype.replace('names','data')] = torch.from_numpy(item).to(self.device)
+                out_dict[itemtype.replace('names', 'data')] = torch.from_numpy(item).to(self.device)
         return out_dict
 
     @staticmethod
@@ -75,8 +73,8 @@ class DenseBodyDataset(Dataset):
         including sub-directories
         '''
         # TODO: Take into account potential dup images by .ipynb_checkpoints
-        image_names = [root + '/' + name for name in os.listdir(root) 
-            if name.split('.')[-1].lower() in IMAGE_EXTENSIONS]
+        image_names = [root + '/' + name for name in os.listdir(root)
+                       if name.split('.')[-1].lower() in IMAGE_EXTENSIONS]
         subs = [sub for sub in os.listdir(root) if os.path.isdir(sub)]
         for sub in subs:
             full_sub = root + '/' + sub

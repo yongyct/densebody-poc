@@ -1,4 +1,3 @@
-import os
 import sys
 import argparse
 import logging
@@ -12,8 +11,7 @@ from densebody_poc.datasets.visualizer import Visualizer
 from densebody_poc.exceptions.model_error import ModelNotFoundError
 from densebody_poc.exceptions.conf_error import InvalidJsonConfigError
 
-from densebody_poc.utils.constants import JOB_CONF_KEY, BATCH_SIZE_KEY, MAX_DATASET_SIZE_KEY
-
+from densebody_poc.utils.constants import JOB_CONF_KEY, BATCH_SIZE_KEY
 
 # Logging configs
 logging.basicConfig(level=getattr(logging, 'INFO', logging.INFO))
@@ -35,7 +33,7 @@ def handle_error(e):
 
 
 if __name__ == '__main__':
-    
+
     conf = config_util.get_json_conf(program_args.filename)
     # TODO: Add validation -> validation_util.validate_user_conf(conf)
     try:
@@ -50,7 +48,7 @@ if __name__ == '__main__':
 
     batches_per_epoch = max(len(dataset) // conf[JOB_CONF_KEY][BATCH_SIZE_KEY], 1)
     logging.info('Predicting {} images'.format(len(dataset)))
-    
+
     # TODO: implement model objects
     # model = create_model()
     try:
@@ -59,10 +57,10 @@ if __name__ == '__main__':
         model.setup(conf)
     except ModelNotFoundError as e:
         handle_error(e)
-        
+
     # TODO: implement visualizer
     visualizer = Visualizer(conf)
-    
+
     with torch.no_grad():
         dataset_iter = tqdm(range(len(dataset)), ncols=80)
         for i in dataset_iter:
@@ -72,12 +70,12 @@ if __name__ == '__main__':
             except TypeError as e:
                 logging.error('Issue processing data {} in dataset\n'.format(i) + str(e))
                 continue
-            
+
             # TODO implement setting of input data to model, and passing data into encoder/decoder
             model.set_input(data)
             model.fake_UV = model.decoder(model.encoder(model.real_input))
 
             # TODO: Implement saving of results
             # visualizer.save_results(model.get_current_visuals(), opt.load_epoch, i)
-            
+
             print('Processed data {}'.format(i))
