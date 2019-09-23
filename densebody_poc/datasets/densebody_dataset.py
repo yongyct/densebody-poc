@@ -53,17 +53,23 @@ class DenseBodyDataset(Dataset):
         Mandatory override of Dataset base class method, to get item in dataset
         TODO: item should contain a batch of images to stack
         '''
+        if isinstance(idx, slice):
+            start_idx, stop_idx, step_idx = idx.indices(len(self))
+        elif isinstance(idx, int):
+            start_idx, stop_idx, step_idx = idx, idx + 1, None
+        else:
+            raise TypeError('Invalid index passed: {}'.format(idx))
         out_dict = {}
         for itemtype in self.itemtypes:
-            item = getattr(self, itemtype)[idx]
+            items = getattr(self, itemtype)[start_idx:stop_idx:step_idx]
             if itemtype.endswith('names'):
                 try:
-                    img_tensors = [self.transform(cv2.imread(item))]
+                    img_tensors = [self.transform(cv2.imread(item)) for item in items]
                 except TypeError as e:
-                    raise TypeError(str(e) + '\nFilename: {}'.format(item))
+                    raise TypeError(str(e) + '\nFilename: {}'.format(items))
                 out_dict[itemtype.replace('names', 'data')] = torch.stack(img_tensors).to(self.device)
             else:
-                out_dict[itemtype.replace('names', 'data')] = torch.from_numpy(item).to(self.device)
+                out_dict[itemtype.replace('names', 'data')] = torch.from_numpy(items).to(self.device)
         return out_dict
 
     @staticmethod
