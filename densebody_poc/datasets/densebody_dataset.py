@@ -13,8 +13,7 @@ class DenseBodyDataset(Dataset):
     Dataset class to contain relevant data use for various modes of operations
     """
     def __init__(self, conf):
-
-        self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        self.device = torch.device(conf.DEVICE)
         self.transform = transforms.Compose([
             # Image.fromarray,
             transforms.ToTensor(),

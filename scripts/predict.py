@@ -5,9 +5,9 @@ from tqdm import tqdm
 
 import torch
 
-from densebody_poc.utils import config_util, validation_util, model_util
 from densebody_poc.datasets.densebody_dataset import DenseBodyDataset
-from densebody_poc.datasets.visualizer import Visualizer
+from densebody_poc.utils import config_util, validation_util, model_util
+from densebody_poc.utils.visualization_util import Visualizer
 from densebody_poc.exceptions.model_error import ModelNotFoundError
 from densebody_poc.exceptions.conf_error import InvalidJsonConfigError
 
@@ -45,11 +45,11 @@ if __name__ == '__main__':
     except FileNotFoundError as e:
         handle_error(e)
 
-    batches_per_epoch = max(len(dataset) // conf.BATCH_SIZE, 1)
+    final_batch_size = min(conf.BATCH_SIZE, len(dataset))
+    n_batches = len(dataset) // final_batch_size
     logging.info('Predicting {} images'.format(len(dataset)))
 
     # TODO: implement model objects
-    # model = create_model()
     try:
         model = model_util.get_model(conf)
         model.initialize(conf)
@@ -61,11 +61,13 @@ if __name__ == '__main__':
     visualizer = Visualizer(conf)
 
     with torch.no_grad():
-        dataset_iter = tqdm(range(len(dataset)), ncols=80)
+        dataset_iter = tqdm(range(n_batches), ncols=80)
         for i in dataset_iter:
-            dataset_iter.set_description('Predicting case {}'.format(i))
+            dataset_iter.set_description('Predicting batch {}/{}'.format(i + 1, n_batches))
             try:
-                data = dataset[i]
+                start_idx = i * final_batch_size
+                end_idx = start_idx + final_batch_size
+                data = dataset[start_idx:end_idx]
             except TypeError as e:
                 logging.error('Issue processing data {} in dataset\n'.format(i) + str(e))
                 continue
@@ -74,7 +76,10 @@ if __name__ == '__main__':
             model.set_input(data)
             model.fake_UV = model.decoder(model.encoder(model.real_input))
 
+            # TODO: convert uv map to smpl model
+
+
             # TODO: Implement saving of results
-            # visualizer.save_results(model.get_current_visuals(), opt.load_epoch, i)
+            visualizer.save_results(model.get_current_visuals(), conf.LOAD_EPOCH, i)
 
             print('Processed data {}'.format(i))

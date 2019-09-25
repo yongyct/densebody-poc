@@ -6,6 +6,8 @@
 
 **/data/*
 **/weights/*
+**/output/*
+**/resources/*
 
 *.pxd
 *.pyd

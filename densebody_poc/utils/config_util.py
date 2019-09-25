@@ -6,7 +6,7 @@ from densebody_poc.utils.constants import JOB_CONF_KEY, MODEL_CONF_KEY, OPS_CONF
     DATA_DIR_KEY, BATCH_SIZE_KEY, MODEL_KEY, MAX_DATASET_SIZE_KEY, PHASE_KEY, \
     CHECKPOINT_DIR_KEY, NAME_KEY, CONTINUE_TRAIN_KEY, LOAD_EPOCH_KEY, VERBOSE_KEY, \
     IM_SIZE_KEY, NZ_KEY, NCHANNELS_KEY, NET_E_KEY, NET_D_KEY, NDOWN_KEY, NUP_KEY, \
-    NORM_KEY, NL_E_KEY, NL_D_KEY, INIT_TYPE_KEY
+    NORM_KEY, NL_E_KEY, NL_D_KEY, INIT_TYPE_KEY, DEVICE_KEY, UV_MAP_KEY, RESULTS_DIR_KEY
 
 
 def get_user_conf():
@@ -54,6 +54,8 @@ class UserConfig:
         self.CHECKPOINT_DIR = job_conf[CHECKPOINT_DIR_KEY]
         self.PHASE = job_conf[PHASE_KEY]
         self.MAX_DATASET_SIZE = job_conf[MAX_DATASET_SIZE_KEY]
+        self.DEVICE = job_conf[DEVICE_KEY]
+        self.UV_MAP = job_conf[UV_MAP_KEY]
 
         self.MODEL = model_conf[MODEL_KEY]
         self.IM_SIZE = model_conf[IM_SIZE_KEY]
@@ -62,7 +64,7 @@ class UserConfig:
         self.NET_E = model_conf[NET_E_KEY]
         self.NET_D = model_conf[NET_D_KEY]
         self.NDOWN = model_conf[NDOWN_KEY]
-        self.NUP = model_conf[NDOWN_KEY]
+        self.NUP = model_conf[NUP_KEY]
         self.NORM = model_conf[NORM_KEY]
         self.NL_E = model_conf[NL_E_KEY]
         self.NL_D = model_conf[NL_D_KEY]
@@ -71,3 +73,4 @@ class UserConfig:
         self.CONTINUE_TRAIN = ops_conf[CONTINUE_TRAIN_KEY]
         self.LOAD_EPOCH = ops_conf[LOAD_EPOCH_KEY]
         self.VERBOSE = ops_conf[VERBOSE_KEY]
+        self.RESULTS_DIR = ops_conf[RESULTS_DIR_KEY]

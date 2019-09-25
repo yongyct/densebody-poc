@@ -10,6 +10,8 @@ CHECKPOINT_DIR_KEY = 'checkpoints_dir'
 PHASE_KEY = 'phase'
 MAX_DATASET_SIZE_KEY = 'max_dataset_size'
 BATCH_SIZE_KEY = 'batch_size'
+DEVICE_KEY = 'device'
+UV_MAP_KEY = 'uv_map'
 
 # 2nd level config keys - model
 MODEL_KEY = 'model'
@@ -29,6 +31,7 @@ INIT_TYPE_KEY = 'init_type'
 CONTINUE_TRAIN_KEY = 'continue_train'
 LOAD_EPOCH_KEY = 'load_epoch'
 VERBOSE_KEY = 'verbose'
+RESULTS_DIR_KEY = 'results_dir'
 
 # Phases
 TRAIN = 'train'
@@ -40,3 +43,5 @@ IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'tiff']
 IM_NAMES = 'im_names'
 IM_DATA = 'im_data'
 APP_PROPS_PATH = '../resources/application_properties.json'
+CPU = 'cpu'
+CUDA = 'cuda'

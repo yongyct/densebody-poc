@@ -5,10 +5,11 @@
         "checkpoints_dir":"./weights",
         "dataset":"surreal",
         "max_dataset_size":-1,
-        "batch_size":10,
+        "batch_size":1,
         "uv_map":"radvani",
         "num_threads":2,
-        "phase":"in_the_wild"
+        "phase":"in_the_wild",
+        "device":"cuda"
     },
     "model_conf":{
         "model":"resnetmodel",
