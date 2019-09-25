@@ -11,7 +11,6 @@ from densebody_poc.datasets.visualizer import Visualizer
 from densebody_poc.exceptions.model_error import ModelNotFoundError
 from densebody_poc.exceptions.conf_error import InvalidJsonConfigError
 
-from densebody_poc.utils.constants import JOB_CONF_KEY, BATCH_SIZE_KEY
 
 # Logging configs
 logging.basicConfig(level=getattr(logging, 'INFO', logging.INFO))
@@ -25,16 +24,16 @@ logging.info('Json config provided: {}'.format(program_args.filename))
 
 
 def handle_error(e):
-    '''
+    """
     Error handling during the prediction dataflow
-    '''
+    """
     logging.error(str(e) + '\n...Exiting program...')
     sys.exit(0)
 
 
 if __name__ == '__main__':
 
-    conf = config_util.get_json_conf(program_args.filename)
+    conf = config_util.get_user_conf()
     # TODO: Add validation -> validation_util.validate_user_conf(conf)
     try:
         validation_util.validate_user_conf(conf)
@@ -46,7 +45,7 @@ if __name__ == '__main__':
     except FileNotFoundError as e:
         handle_error(e)
 
-    batches_per_epoch = max(len(dataset) // conf[JOB_CONF_KEY][BATCH_SIZE_KEY], 1)
+    batches_per_epoch = max(len(dataset) // conf.BATCH_SIZE, 1)
     logging.info('Predicting {} images'.format(len(dataset)))
 
     # TODO: implement model objects
