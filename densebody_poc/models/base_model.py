@@ -37,7 +37,7 @@ class BaseModel:
             if isinstance(name, str):
                 load_filename = '{}_net_{}.pth'.format(epoch, name)
                 load_path = os.path.join(self.save_dir, load_filename)
-                state_dict = torch.load(load_path)
+                state_dict = torch.load(load_path, map_location=self.device)
                 net = getattr(self, name)
                 net.load_state_dict(state_dict)
         print('Checkpoints loaded from epoch {}'.format(epoch))

@@ -6,10 +6,10 @@
         "dataset":"surreal",
         "max_dataset_size":-1,
         "batch_size":1,
-        "uv_map":"radvani",
+        "uv_map":"smpl_torch",
         "num_threads":2,
         "phase":"in_the_wild",
-        "device":"cuda"
+        "device":"cpu"
     },
     "model_conf":{
         "model":"resnetmodel",

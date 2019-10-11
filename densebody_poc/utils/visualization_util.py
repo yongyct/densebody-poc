@@ -46,6 +46,7 @@ class Visualizer():
                 self.tensor2im(torch.cat([im for im in visual_dict.values()], dim=2))
                 )
         fake_UV = visual_dict['fake_UV']
+        # fake_UV = (fake_UV + 1) / 2 * 255
         resampled_verts = self.UV_sampler.resample(self.tensor2numpy(fake_UV))
         self.UV_sampler.write_ply(ply_name, resampled_verts)
         self.model.write_obj(resampled_verts, obj_name)
